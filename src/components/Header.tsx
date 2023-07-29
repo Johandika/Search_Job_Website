@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { FC } from "react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import Link from "next/link";
 
 interface HeaderProps {}
 
@@ -19,9 +20,12 @@ const Header: FC<HeaderProps> = ({}) => {
 					/>
 				</div>
 				<div>
-					<span className="font-medium text-gray-600 mr-4 cursor-pointer">
+					<Link
+						href="/find-jobs"
+						className="font-medium text-gray-600 mr-4 cursor-pointer"
+					>
 						Find Jobs
-					</span>
+					</Link>
 					<span className="font-medium text-gray-600 cursor-pointer">
 						Browse Companies
 					</span>

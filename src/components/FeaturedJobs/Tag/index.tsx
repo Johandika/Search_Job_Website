@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 interface TagProps {
 	text: string;
