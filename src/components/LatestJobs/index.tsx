@@ -1,16 +1,13 @@
-import React, { FC } from "react";
-import TitleSection from "../TitleSection";
 import Image from "next/image";
-import Tag from "../FeaturedJobs/Tag";
-import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
+import { FC } from "react";
+import TitleSection from "../TitleSection";
 import JobItem from "./JobItem";
 
 interface LatestJobsProps {}
 
 const LatestJobs: FC<LatestJobsProps> = ({}) => {
 	return (
-		<div className="px-32 py-16 mt-32 mb-10 bg-white-background relative">
+		<div className="px-32 py-16 mt-32 bg-white-background relative">
 			<div className="absolute w-2/3 top-0 right-0 -z-10">
 				<Image
 					src="/images/pattern3.png"
