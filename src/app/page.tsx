@@ -3,6 +3,7 @@ import Category from "@/components/Category";
 import Clients from "@/components/Clients";
 import FeaturedJobs from "@/components/FeaturedJobs";
 import Hero from "@/components/Hero";
+import LatestJobs from "@/components/LatestJobs";
 
 export default function Home() {
 	return (
@@ -12,6 +13,7 @@ export default function Home() {
 			<Category />
 			<BannerSignUp />
 			<FeaturedJobs />
+			<LatestJobs />
 		</section>
 	);
 }
