@@ -99,3 +99,81 @@ export const SALARY_RANGE_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
 		label: "$3000 or above",
 	},
 ];
+
+export const INDUSTRY_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
+	{
+		id: "Advertising",
+		label: "Advertising",
+	},
+	{
+		id: "Business Service",
+		label: "Business Service",
+	},
+	{
+		id: "Blockchain",
+		label: "Blockchain",
+	},
+	{
+		id: "Cloud",
+		label: "Cloud",
+	},
+	{
+		id: "Consumer Tech",
+		label: "Consumer Tech",
+	},
+	{
+		id: "Education",
+		label: "Education",
+	},
+	{
+		id: "Fintech",
+		label: "Fintech",
+	},
+	{
+		id: "Gaming",
+		label: "Gaming",
+	},
+	{
+		id: "Food & Beverage",
+		label: "Food & Beverage",
+	},
+	{
+		id: "Healthcare",
+		label: "Healthcare",
+	},
+	{
+		id: "Hosting",
+		label: "Hosting",
+	},
+	{
+		id: "Media",
+		label: "Media",
+	},
+];
+
+export const COMPANYSIZE_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
+	{
+		id: "1,50",
+		label: "1-50",
+	},
+	{
+		id: "51,150",
+		label: "51-150",
+	},
+	{
+		id: "151,250",
+		label: "151-250",
+	},
+	{
+		id: "251,500",
+		label: "251-500",
+	},
+	{
+		id: "501,1000",
+		label: "501-1000",
+	},
+	{
+		id: "1000",
+		label: "1000-above",
+	},
+];

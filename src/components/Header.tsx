@@ -26,9 +26,12 @@ const Header: FC<HeaderProps> = ({}) => {
 					>
 						Find Jobs
 					</Link>
-					<span className="font-medium text-gray-600 cursor-pointer">
+					<Link
+						href="/find-companies"
+						className="font-medium text-gray-600 cursor-pointer"
+					>
 						Browse Companies
-					</span>
+					</Link>
 				</div>
 			</div>
 			<div className="inline-flex items-center gap-4 h-8">

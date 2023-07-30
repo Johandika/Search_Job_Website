@@ -1,7 +1,10 @@
 "use client";
 
 import { FilterFormProps } from "@/components/FilterFormData";
-import { formFilterSchema } from "@/components/helpers/formSchema";
+import {
+	formFilterJobSchema,
+	formSearchSchema,
+} from "@/components/helpers/formSchema";
 import {
 	CATEGORIES_OPTIONS_FILTER,
 	JOB_LEVEL_OPTIONS_FILTER,
@@ -36,9 +39,22 @@ const filterForms: FilterFormProps[] = [
 	},
 ];
 
+const dummyData: any = [
+	{
+		name: "Social Media Assistant",
+		image: "/images/company.png",
+		jobType: "Full-Time",
+		location: "Paris, France",
+		categories: ["Marketing", "Design"],
+		type: "Agency",
+		applicants: 5,
+		needs: 10,
+	},
+];
+
 export default function FindJobsPage() {
-	const formFilter = useForm<z.infer<typeof formFilterSchema>>({
-		resolver: zodResolver(formFilterSchema),
+	const formFilter = useForm<z.infer<typeof formFilterJobSchema>>({
+		resolver: zodResolver(formFilterJobSchema),
 		defaultValues: {
 			jobTypes: [],
 			categories: [],
@@ -47,7 +63,17 @@ export default function FindJobsPage() {
 		},
 	});
 
-	const onSubmitFilter = async (values: z.infer<typeof formFilterSchema>) => {
+	const formSearch = useForm<z.infer<typeof formSearchSchema>>({
+		resolver: zodResolver(formSearchSchema),
+	});
+
+	const onSubmitSearch = async (values: z.infer<typeof formSearchSchema>) => {
+		console.log(values);
+	};
+
+	const onSubmitFilter = async (
+		values: z.infer<typeof formFilterJobSchema>
+	) => {
 		console.log(values);
 	};
 
@@ -56,6 +82,13 @@ export default function FindJobsPage() {
 			formFilter={formFilter}
 			onSubmitFilter={onSubmitFilter}
 			filterForms={filterForms}
+			formSearch={formSearch}
+			onSubmitSearch={onSubmitSearch}
+			titleContent="dream job"
+			descriptionContent="Find your next career at companies like HubSpot, Nike, and Dropbox"
+			type="jobs"
+			data={dummyData}
+			loading={true}
 		/>
 	);
 }

@@ -5,7 +5,7 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
-interface JobCardProps {
+export interface JobCardProps {
 	image: string;
 	name: string;
 	type: string;
