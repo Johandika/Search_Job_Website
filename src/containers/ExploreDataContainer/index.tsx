@@ -1,11 +1,11 @@
 "use client";
 
-import CompanyCard from "@/components/CompanyCard";
-import CompanyCardSkeleton from "@/components/CompanyCardSkeleton";
+import CompanyCard from "@/components/atoms/CompanyCard";
+import CompanyCardSkeleton from "@/components/atoms/CompanyCard/CompanyCardSkeleton";
 import FilterFormData, { FilterFormProps } from "@/components/FilterFormData";
 import FormSearch from "@/components/FormSearch";
-import JobCard, { JobCardProps } from "@/components/JobCard";
-import JobCardSkeleton from "@/components/JobCardSkeleton";
+import JobCard, { JobCardProps } from "@/components/atoms/JobCard";
+import JobCardSkeleton from "@/components/atoms/JobCard/JobCardSkeleton";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { FC } from "react";

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { FC } from "react";
-import Tag from "../FeaturedJobs/Tag";
+import Tag from "../../FeaturedJobs/Tag";
 
 interface CompanyCardProps {
 	image: string;

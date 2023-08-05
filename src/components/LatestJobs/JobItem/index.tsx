@@ -23,9 +23,7 @@ const JobItem: FC<JobItemProps> = ({
 }) => {
 	return (
 		<div className="bg-white shadow-xs p-8 flex flex-row items-start gap-6 cursor-pointer">
-			<div>
-				<Image src={image} alt={image} width={64} height={64} />
-			</div>
+			<Image src={image} alt={image} width={64} height={64} />
 			<div>
 				<div className="text-lg font-semibold">{name}</div>
 				<div className="text-sm text-gray-500 mb-2">
