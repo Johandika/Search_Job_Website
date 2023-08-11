@@ -1,6 +1,6 @@
+import Tag from "@/components/organisms/FeaturedJobs/Tag";
 import Image from "next/image";
 import React, { FC } from "react";
-import Tag from "../../FeaturedJobs/Tag";
 
 interface CompanyCardProps {
 	image: string;

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { FC } from "react";
-import Tag from "../../FeaturedJobs/Tag";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
+import Tag from "@/components/organisms/FeaturedJobs/Tag";
 
 export interface JobCardProps {
 	image: string;

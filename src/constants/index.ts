@@ -1,4 +1,4 @@
-import { FilterCheckboxOptionsProps } from "@/components/FilterData/FilterCheckbox";
+import { FilterCheckboxOptionsProps } from "@/components/organisms/FilterFormData/FilterCheckbox";
 
 export const JOB_TYPES_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
 	{
