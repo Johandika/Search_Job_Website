@@ -1,18 +1,38 @@
+"use client";
+
 import { FC } from "react";
 
-import CategoryItem from "./CategoryItem";
 import TitleSection from "@/components/atoms/TitleSection";
+import useCategories from "@/hooks/useCategories";
+import CategoryItem from "./CategoryItem";
 
 interface CategoryProps {}
 
 const Category: FC<CategoryProps> = ({}) => {
+	const { categories, isError, isLoading } = useCategories();
+
 	return (
 		<div className="px-32 mt-32 mb-8">
 			<TitleSection word1="Explore by" word2="category" />
 			<div className="grid grid-cols-5 gap-9 mt-12">
-				{[0, 1, 2, 3, 4].map((item: number, i: number) => (
-					<CategoryItem key={i} name="Design" totalJobs={235} />
-				))}
+				{isLoading ? (
+					<>
+						{[0, 1, 2, 3, 4].map((item: number) => (
+							<CategoryItem key={item} loading={true} />
+						))}
+					</>
+				) : (
+					<>
+						{categories?.map((item: any, i: number) => (
+							<CategoryItem
+								key={i}
+								loading={false}
+								name={item.name}
+								totalJobs={item._count.Job}
+							/>
+						))}
+					</>
+				)}
 			</div>
 		</div>
 	);

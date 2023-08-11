@@ -1,14 +1,17 @@
+"use client";
+
 import BannerSignUp from "@/components/atoms/BannerSignUp";
 import Clients from "@/components/atoms/Clients";
 import Hero from "@/components/atoms/Hero";
 import Category from "@/components/organisms/Category";
 import FeaturedJobs from "@/components/organisms/FeaturedJobs";
 import LatestJobs from "@/components/organisms/LatestJobs";
+import SWRProvider from "@/providers/SWRProvider";
 import Image from "next/image";
 
 export default function Home() {
 	return (
-		<>
+		<SWRProvider>
 			<div className="bg-white-background w-full h-screen absolute top-0 -z-10" />
 			<div className="absolute w-2/3 h-screen top-0 right-0 -z-10">
 				<Image
@@ -25,6 +28,6 @@ export default function Home() {
 				<FeaturedJobs />
 				<LatestJobs />
 			</section>
-		</>
+		</SWRProvider>
 	);
 }
