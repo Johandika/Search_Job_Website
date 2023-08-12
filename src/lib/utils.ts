@@ -2,9 +2,34 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { supabaseGetPublicURL } from "./supabase";
 
+import dayjs from "dayjs";
+
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
+
+export const dateFormat = (date: Date, format: string = "DD MMM YYYY") => {
+	return dayjs(date).format(format);
+};
+
+export const parseJob = async (data: any) => {
+	let imageName = data.Company?.Companyoverview[0]?.image;
+	let supabaseImageUrl;
+
+	if (imageName) {
+		supabaseImageUrl = await supabaseGetPublicURL(imageName, "company");
+	} else {
+		supabaseImageUrl = "/images/company.png";
+	}
+
+	return {
+		...data,
+		companyType: data.Company?.Companyoverview[0]?.industry,
+		location: data.Company?.Companyoverview[0]?.location,
+		image: supabaseImageUrl,
+		category: data.CategoryJob?.name,
+	};
+};
 
 export const parserJobs = async (data: any[]) => {
 	return await Promise.all(

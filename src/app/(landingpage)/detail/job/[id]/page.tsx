@@ -1,5 +1,3 @@
-"use client";
-
 import BreadCrumbs from "@/components/atoms/BreadCrumbs";
 import DetailDescription from "@/components/atoms/DetailDescription";
 import DialogApply from "@/components/organisms/DialogApply";
@@ -7,18 +5,54 @@ import Tag from "@/components/organisms/FeaturedJobs/Tag";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { Metadata } from "next";
 import Image from "next/image";
+import prisma from "../../../../../../lib/prisma";
+import { dateFormat, parseJob } from "@/lib/utils";
 
-export default function DetailJobPage() {
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+	title: "Dashboard | Detail Job",
+};
+
+async function getDetailJob(id: string) {
+	const data = await prisma.job.findFirst({
+		where: {
+			id,
+		},
+		include: {
+			Company: {
+				include: {
+					Companyoverview: true,
+				},
+			},
+			CategoryJob: true,
+		},
+	});
+
+	return parseJob(data);
+}
+
+export default async function DetailJobPage({
+	params,
+}: {
+	params: { id: string };
+}) {
+	const data = await getDetailJob(params.id);
+
 	return (
 		<>
 			<div className="bg-white-background px-32 pt-10 pb-14">
 				<BreadCrumbs
 					routes={[
-						{ name: "Nomad", path: "/detail/company/1" },
+						{
+							name: data.Company.name,
+							path: `/detail/company/${data.companyId}`,
+						},
 						{
 							name: "Social Media Assistant",
-							path: "/detail/job/1",
+							path: `/detail/job/${data.id}`,
 						},
 					]}
 				/>
@@ -27,18 +61,19 @@ export default function DetailJobPage() {
 					<div className="inline-flex items-center gap-5">
 						<div>
 							<Image
-								src="/images/company.png"
-								alt="/images/company.png"
+								src={data.image}
+								alt={data.image}
 								width={88}
 								height={88}
 							/>
 						</div>
 						<div>
 							<div className="text-2xl font-semibold">
-								Social Media Assistant
+								{data.roles}
 							</div>
 							<div className="text-gray-600">
-								Agency · Paris, France · Full-Time
+								{data.companyType} · {data.location} ·{" "}
+								{data.jobType}
 							</div>
 						</div>
 					</div>
@@ -49,27 +84,19 @@ export default function DetailJobPage() {
 				<div className="w-3/4">
 					<DetailDescription
 						title="Description"
-						desc={
-							"<p>Stripe is looking for Social Media Marketingexpert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</p>"
-						}
+						desc={data.description}
 					/>
 					<DetailDescription
 						title="Responsibilities"
-						desc={
-							"<p>Stripe is looking for Social Media Marketingexpert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</p>"
-						}
+						desc={data.responsibility}
 					/>
 					<DetailDescription
 						title="Who You Are"
-						desc={
-							"<p>Stripe is looking for Social Media Marketingexpert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</p>"
-						}
+						desc={data.whoYouAre}
 					/>
 					<DetailDescription
 						title="Nice-To-Haves"
-						desc={
-							"<p>Stripe is looking for Social Media Marketingexpert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</p>"
-						}
+						desc={data.niceToHaves}
 					/>
 				</div>
 				<div className="w-1/4">
@@ -80,12 +107,18 @@ export default function DetailJobPage() {
 
 						<div className="mt-6 p-4 bg-[#F8F8FD]">
 							<div className="mb-2">
-								<span className="font-semibold">5 applied</span>{" "}
+								<span className="font-semibold">
+									{data.applicants} applied
+								</span>{" "}
 								<span className="text-gray-600">
-									of 10 capacity
+									of {data.needs} capacity
 								</span>
 							</div>
-							<Progress value={50} />
+							<Progress
+								value={
+									((data.applicants * data.needs) / 100) * 100
+								}
+							/>
 						</div>
 
 						<div className="mt-6 space-y-4">
@@ -94,7 +127,7 @@ export default function DetailJobPage() {
 									Apply Before
 								</div>
 								<div className="font-semibold">
-									July 31, 2021
+									{dateFormat(data.dueDate)}
 								</div>
 							</div>
 							<div className="flex flex-row justify-between">
@@ -102,17 +135,19 @@ export default function DetailJobPage() {
 									Job Posted On
 								</div>
 								<div className="font-semibold">
-									July 1, 2021
+									{dateFormat(data.datePosted)}
 								</div>
 							</div>
 							<div className="flex flex-row justify-between">
 								<div className="text-gray-500">Job Type</div>
-								<div className="font-semibold">Full-Time</div>
+								<div className="font-semibold">
+									{data.jobType}
+								</div>
 							</div>
 							<div className="flex flex-row justify-between">
 								<div className="text-gray-500">Salary</div>
 								<div className="font-semibold">
-									$75k-$85k USD
+									${data.salaryFrom}-${data.salaryTo} USD
 								</div>
 							</div>
 						</div>
@@ -124,8 +159,7 @@ export default function DetailJobPage() {
 						<div className="text-3xl font-semibold">Categories</div>
 
 						<div className="my-10 inline-flex gap-4">
-							<Tag text="Marketing" key={1} />
-							<Tag text="Design" key={2} />
+							<Tag text={data.category} />
 						</div>
 					</div>
 
@@ -137,12 +171,16 @@ export default function DetailJobPage() {
 						</div>
 
 						<div className="my-5 inline-flex gap-4">
-							<Badge className="rounded-none bg-blue-50 py-2 text-blue-primary hover:bg-blue-50">
-								Project Management
-							</Badge>
-							<Badge className="rounded-none bg-blue-50 py-2 text-blue-primary  hover:bg-blue-50">
-								Copywriting
-							</Badge>
+							{data.requiredSkills.map(
+								(item: string, i: number) => (
+									<Badge
+										key={i}
+										className="rounded-none bg-blue-50 py-2 text-blue-primary hover:bg-blue-50"
+									>
+										{item}
+									</Badge>
+								)
+							)}
 						</div>
 					</div>
 				</div>
@@ -161,7 +199,7 @@ export default function DetailJobPage() {
 				</div>
 
 				<div className="grid grid-cols-5 gap-5">
-					{[0, 1, 2, 3, 4].map((item: number, i: number) => (
+					{data.benefits.map((item: any, i: number) => (
 						<div key={i}>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -178,11 +216,10 @@ export default function DetailJobPage() {
 								/>
 							</svg>
 							<div className="font-semibold text-xl mt-6">
-								Full Healthcare
+								{item.benefit}
 							</div>
 							<div className="mt-3 text-sm text-gray-500">
-								We believe in thriving communities and that
-								starts with our team being happy and healthy.
+								{item.description}
 							</div>
 						</div>
 					))}

@@ -1,9 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { FC } from "react";
 import { Badge } from "../../ui/badge";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 import Tag from "@/components/organisms/FeaturedJobs/Tag";
+import { useRouter } from "next/navigation";
 
 export interface JobCardProps {
 	image: string;
@@ -14,6 +17,7 @@ export interface JobCardProps {
 	requiredSkills: string[];
 	needs: number;
 	applicants: number;
+	id: string;
 }
 
 const JobCard: FC<JobCardProps> = ({
@@ -25,9 +29,17 @@ const JobCard: FC<JobCardProps> = ({
 	category,
 	applicants,
 	needs,
+	id,
 }) => {
+	const router = useRouter();
+
+	const handleClickJob = () => router.push(`/detail/job/${id}`);
+
 	return (
-		<div className="w-full border mb-5 p-6 border-gray-300 flex flex-row justify-between items-center">
+		<div
+			onClick={handleClickJob}
+			className="w-full border mb-5 p-6 border-gray-300 flex flex-row justify-between items-center"
+		>
 			<div className="flex flex-row items-start gap-6">
 				<div>
 					<Image src={image} alt={image} width={64} height={64} />
