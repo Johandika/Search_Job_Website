@@ -1,14 +1,12 @@
+import TitleSection from "@/components/atoms/TitleSection";
+import useJobsLanding from "@/hooks/useJobsLanding";
 import { FC } from "react";
 import FeaturedJobItem from "./FeaturedJobItem";
-import TitleSection from "@/components/atoms/TitleSection";
-import useJobs from "@/hooks/useJobs";
 
 interface FeaturedJobsProps {}
 
 const FeaturedJobs: FC<FeaturedJobsProps> = ({}) => {
-	const { jobs, isLoading } = useJobs();
-
-	console.log(jobs);
+	const { jobs, isLoading } = useJobsLanding();
 
 	return (
 		<div className="px-32 mt-32 mb-10">
@@ -32,7 +30,7 @@ const FeaturedJobs: FC<FeaturedJobsProps> = ({}) => {
 								desc={item.description}
 								categories={item.requiredSkills}
 								loading={false}
-								key={i}
+								key={i + item.id}
 							/>
 						))}
 					</>

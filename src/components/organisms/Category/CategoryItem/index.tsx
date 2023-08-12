@@ -1,7 +1,10 @@
-import React, { FC } from "react";
+"use client";
 
-import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import { FC } from "react";
+
+import { useRouter } from "next/navigation";
 import { BiCategory } from "react-icons/bi";
+import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type CategoryItemProps = {} & (ItemLoadingType | ItemNonLoadingType);
@@ -14,11 +17,23 @@ type ItemNonLoadingType = {
 	loading: false;
 	name: string;
 	totalJobs: number;
+	id: string;
 };
 
 const CategoryItem: FC<CategoryItemProps> = (props) => {
+	const router = useRouter();
+
+	const handleClickCategory = () => {
+		if (!props.loading) {
+			router.push(`/find-jobs?category=${props.id}`);
+		}
+	};
+
 	return (
-		<div className="border border-slate-200 p-8 cursor-pointer transition-colors group hover:border-blue-primary hover:bg-blue-primary hover:text-white">
+		<div
+			onClick={handleClickCategory}
+			className="border border-slate-200 p-8 cursor-pointer transition-colors group hover:border-blue-primary hover:bg-blue-primary hover:text-white"
+		>
 			<BiCategory className="w-12 h-12 text-blue-primary group-hover:text-white" />
 			<div className="mt-7">
 				<div className="text-2xl font-semibold">

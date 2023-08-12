@@ -1,5 +1,24 @@
 import { FilterCheckboxOptionsProps } from "@/components/organisms/FilterFormData/FilterCheckbox";
 
+export const SELECT_LOCATION_COMPANY: FilterCheckboxOptionsProps[] = [
+	{
+		id: "Indonesia",
+		label: "Indonesia",
+	},
+	{
+		id: "Malaysia",
+		label: "Malaysia",
+	},
+	{
+		id: "Singapura",
+		label: "Singapura",
+	},
+	{
+		id: "Thailand",
+		label: "Thailand",
+	},
+];
+
 export const JOB_TYPES_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
 	{
 		id: "Full-Time",

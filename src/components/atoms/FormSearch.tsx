@@ -18,6 +18,8 @@ import {
 	FormItem,
 	FormMessage,
 } from "../ui/form";
+import { SELECT_LOCATION_COMPANY } from "@/constants";
+import { FilterCheckboxOptionsProps } from "../organisms/FilterFormData/FilterCheckbox";
 
 interface FormSearchProps {
 	form: any;
@@ -72,9 +74,19 @@ const FormSearch: FC<FormSearchProps> = ({
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												<SelectItem value="Indonesia">
-													Indonesia
-												</SelectItem>
+												{SELECT_LOCATION_COMPANY.map(
+													(
+														item: FilterCheckboxOptionsProps,
+														i: number
+													) => (
+														<SelectItem
+															key={i + item.id}
+															value={item.id}
+														>
+															{item.label}
+														</SelectItem>
+													)
+												)}
 											</SelectContent>
 										</Select>
 									</div>

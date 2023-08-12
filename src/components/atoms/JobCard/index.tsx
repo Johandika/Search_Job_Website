@@ -7,22 +7,22 @@ import Tag from "@/components/organisms/FeaturedJobs/Tag";
 
 export interface JobCardProps {
 	image: string;
-	name: string;
-	type: string;
+	roles: string;
+	category: string;
 	location: string;
 	jobType: string;
-	categories: string[];
+	requiredSkills: string[];
 	needs: number;
 	applicants: number;
 }
 
 const JobCard: FC<JobCardProps> = ({
-	categories,
+	requiredSkills,
 	image,
 	jobType,
 	location,
-	name,
-	type,
+	roles,
+	category,
 	applicants,
 	needs,
 }) => {
@@ -33,14 +33,14 @@ const JobCard: FC<JobCardProps> = ({
 					<Image src={image} alt={image} width={64} height={64} />
 				</div>
 				<div>
-					<div className="text-lg font-semibold">{name}</div>
+					<div className="text-lg font-semibold">{roles}</div>
 					<div className="text-sm text-gray-500 mb-2">
-						{type} · {location}
+						{category} · {location}
 					</div>
 					<div className="h-5 inline-flex gap-2 items-center">
 						<Badge variant="secondary">{jobType}</Badge>
 						<Separator orientation="vertical" />
-						{categories.map((item: string, i: number) => (
+						{requiredSkills.map((item: string, i: number) => (
 							<Tag key={i} text={item} />
 						))}
 					</div>

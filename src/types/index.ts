@@ -17,3 +17,8 @@ export type listFormFieldTypes = {
 	inputType?: inputType;
 	type?: string;
 };
+
+export type sortingParamsType = {
+	field: string;
+	orderType: "asc" | "desc";
+};

@@ -12,6 +12,7 @@ import FormSearch from "@/components/atoms/FormSearch";
 import JobCard, { JobCardProps } from "@/components/atoms/JobCard";
 import JobCardSkeleton from "@/components/atoms/JobCard/JobCardSkeleton";
 import { cn } from "@/lib/utils";
+import EmptyData from "@/components/organisms/EmptyData";
 
 type ExploreDataContainerProps = {
 	formFilter: any;
@@ -95,7 +96,11 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 							All {type === "jobs" ? "Jobs" : "Companies"}
 						</div>
 						<div className="text-gray-500">
-							Showing {props.data.length} results
+							{props.loading ? (
+								<>Loading...</>
+							) : (
+								<>Showing {props.data.length} results</>
+							)}
 						</div>
 					</div>
 					{props.loading ? (
@@ -123,23 +128,34 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 									: "grid grid-cols-3 gap-4"
 							)}
 						>
-							{type === "jobs" &&
-								props.data.map(
-									(item: JobCardProps, i: number) => (
-										<JobCard key={i} {...item} />
-									)
-								)}
-							{type === "companies" &&
-								props.data.map((item: any, i: number) => (
-									<CompanyCard
-										key={i}
-										name="Pattern"
-										image="/images/company.png"
-										totalJobs={8}
-										description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores officia laudantium beatae possimus unde dicta similique perferendis voluptates corrupti, amet odio cum deleniti alias quo pariatur, numquam excepturi magni eos."
-										categories={["Marketing", "Blockchain"]}
-									/>
-								))}
+							{props.data.length > 0 ? (
+								<>
+									{type === "jobs" &&
+										props.data.map(
+											(item: JobCardProps, i: number) => (
+												<JobCard key={i} {...item} />
+											)
+										)}
+									{type === "companies" &&
+										props.data.map(
+											(item: any, i: number) => (
+												<CompanyCard
+													key={i}
+													name="Pattern"
+													image="/images/company.png"
+													totalJobs={8}
+													description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores officia laudantium beatae possimus unde dicta similique perferendis voluptates corrupti, amet odio cum deleniti alias quo pariatur, numquam excepturi magni eos."
+													categories={[
+														"Marketing",
+														"Blockchain",
+													]}
+												/>
+											)
+										)}
+								</>
+							) : (
+								<EmptyData />
+							)}
 						</div>
 					)}
 				</div>

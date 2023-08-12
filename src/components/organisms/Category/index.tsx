@@ -9,7 +9,7 @@ import CategoryItem from "./CategoryItem";
 interface CategoryProps {}
 
 const Category: FC<CategoryProps> = ({}) => {
-	const { categories, isError, isLoading } = useCategories();
+	const { data, isLoading } = useCategories();
 
 	return (
 		<div className="px-32 mt-32 mb-8">
@@ -23,9 +23,10 @@ const Category: FC<CategoryProps> = ({}) => {
 					</>
 				) : (
 					<>
-						{categories?.map((item: any, i: number) => (
+						{data?.map((item: any, i: number) => (
 							<CategoryItem
-								key={i}
+								key={i + item.id}
+								id={item.id}
 								loading={false}
 								name={item.name}
 								totalJobs={item._count.Job}

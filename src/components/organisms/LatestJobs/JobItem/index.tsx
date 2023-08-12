@@ -29,12 +29,14 @@ const JobItem: FC<JobItemProps> = ({
 				<div className="text-sm text-gray-500 mb-2">
 					{type} · {location}
 				</div>
-				<div className="h-5 inline-flex gap-2 items-center">
+				<div className="h-5 inline-flex gap-2 items-center text-center">
 					<Badge variant="secondary">{jobType}</Badge>
 					<Separator orientation="vertical" />
-					{categories.map((item: string, i: number) => (
-						<Tag key={i} text={item} />
-					))}
+					<div className="flex flex-row gap-2 flex-wrap">
+						{categories.map((item: string, i: number) => (
+							<Tag key={i} text={item} />
+						))}
+					</div>
 				</div>
 			</div>
 		</div>
