@@ -30,6 +30,7 @@ const FeaturedJobs: FC<FeaturedJobsProps> = ({}) => {
 								desc={item.description}
 								categories={item.requiredSkills}
 								loading={false}
+								id={item.id}
 								key={i + item.id}
 							/>
 						))}

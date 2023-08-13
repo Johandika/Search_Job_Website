@@ -7,7 +7,7 @@ import React, { FC } from "react";
 import { BiLogoFacebookSquare } from "react-icons/bi";
 
 interface IconSocmedProps {
-	url: string;
+	url: string | undefined;
 	type: "twitter" | "facebook" | "linkedin" | "instagram";
 }
 

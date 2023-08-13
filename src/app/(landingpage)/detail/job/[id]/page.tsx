@@ -9,6 +9,8 @@ import { Metadata } from "next";
 import Image from "next/image";
 import prisma from "../../../../../../lib/prisma";
 import { dateFormat, parseJob } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const revalidate = 0;
 
@@ -34,12 +36,37 @@ async function getDetailJob(id: string) {
 	return parseJob(data);
 }
 
+async function getApplicantById() {
+	const session = await getServerSession(authOptions);
+
+	if (!session) {
+		return {
+			isApply: null,
+			totalApplicants: 0,
+		};
+	}
+
+	const isApply = await prisma.applicant.count({
+		where: {
+			userId: session?.user.id,
+		},
+	});
+
+	const applicants = await prisma.applicant.count();
+
+	return {
+		isApply,
+		totalApplicants: applicants,
+	};
+}
+
 export default async function DetailJobPage({
 	params,
 }: {
 	params: { id: string };
 }) {
 	const data = await getDetailJob(params.id);
+	const { isApply, totalApplicants } = await getApplicantById();
 
 	return (
 		<>
@@ -47,8 +74,8 @@ export default async function DetailJobPage({
 				<BreadCrumbs
 					routes={[
 						{
-							name: data.Company.name,
-							path: `/detail/company/${data.companyId}`,
+							name: data.company.name,
+							path: `/detail/company/${data.company.id}`,
 						},
 						{
 							name: "Social Media Assistant",
@@ -72,12 +99,12 @@ export default async function DetailJobPage({
 								{data.roles}
 							</div>
 							<div className="text-gray-600">
-								{data.companyType} · {data.location} ·{" "}
+								{data.category.name} · {data.location} ·{" "}
 								{data.jobType}
 							</div>
 						</div>
 					</div>
-					<DialogApply />
+					<DialogApply job={data} isApply={isApply} />
 				</div>
 			</div>
 			<div className="px-32 py-16 flex flex-row items-start gap-10">
@@ -108,7 +135,7 @@ export default async function DetailJobPage({
 						<div className="mt-6 p-4 bg-[#F8F8FD]">
 							<div className="mb-2">
 								<span className="font-semibold">
-									{data.applicants} applied
+									{totalApplicants} applied
 								</span>{" "}
 								<span className="text-gray-600">
 									of {data.needs} capacity
@@ -116,7 +143,7 @@ export default async function DetailJobPage({
 							</div>
 							<Progress
 								value={
-									((data.applicants * data.needs) / 100) * 100
+									((totalApplicants * data.needs) / 100) * 100
 								}
 							/>
 						</div>
@@ -159,7 +186,7 @@ export default async function DetailJobPage({
 						<div className="text-3xl font-semibold">Categories</div>
 
 						<div className="my-10 inline-flex gap-4">
-							<Tag text={data.category} />
+							<Tag text={data.category.name} />
 						</div>
 					</div>
 

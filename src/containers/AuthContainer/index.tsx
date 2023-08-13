@@ -16,6 +16,7 @@ interface AuthContainerProps {
 	listForm: listFormFieldTypes[];
 	buttonText: string;
 	submitAction: (val: any) => void;
+	isSubmit: boolean;
 }
 
 const AuthContainer: FC<AuthContainerProps> = ({
@@ -24,6 +25,7 @@ const AuthContainer: FC<AuthContainerProps> = ({
 	listForm,
 	submitAction,
 	buttonText,
+	isSubmit,
 }) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -44,7 +46,11 @@ const AuthContainer: FC<AuthContainerProps> = ({
 						<InputFormField key={i} form={form} {...field} />
 					))}
 
-					<Button type="submit" className="w-full">
+					<Button
+						disabled={isSubmit}
+						type="submit"
+						className="w-full"
+					>
 						{buttonText}
 					</Button>
 				</form>

@@ -2,20 +2,66 @@ import BreadCrumbs from "@/components/atoms/BreadCrumbs";
 import DetailDescription from "@/components/atoms/DetailDescription";
 import IconSocmed from "@/components/atoms/IconSocmed";
 import IconWithDetail from "@/components/atoms/IconWithDetail";
+import Tag from "@/components/organisms/FeaturedJobs/Tag";
+import LatestJobsOpen from "@/components/organisms/LatestJobsOpen";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { dateFormat, parseCompany } from "@/lib/utils";
+import { teamCompanyType } from "@/types/company";
 import { InstagramLogoIcon, LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Tag from "@/components/organisms/FeaturedJobs/Tag";
-import LatestJobs from "@/components/organisms/LatestJobs";
+import prisma from "../../../../../../lib/prisma";
 
-export default function DetailCompanyPage() {
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+	title: "Dashboard | Detail Company",
+};
+
+async function getDetailCompany(id: string) {
+	const data = await prisma.company.findFirst({
+		where: {
+			id,
+		},
+		include: {
+			Companyoverview: true,
+			CompanySocialMedia: true,
+			CompanyTeam: true,
+			Job: {
+				include: {
+					CategoryJob: true,
+				},
+			},
+			_count: {
+				select: {
+					Job: true,
+				},
+			},
+		},
+	});
+
+	return parseCompany(data);
+}
+
+export default async function DetailCompanyPage({
+	params,
+}: {
+	params: { id: string };
+}) {
+	const data = await getDetailCompany(params.id);
+
 	return (
 		<div>
 			<div className="bg-white-background px-32 pt-16 pb-14">
 				<BreadCrumbs
-					routes={[{ name: "Nomad", path: "/detail/company/1" }]}
+					routes={[
+						{
+							name: data.detail?.name!!,
+							path: `/detail/company/${data.id}`,
+						},
+					]}
 				/>
 
 				<div className="mt-10 inline-flex gap-6 items-start">
@@ -30,40 +76,43 @@ export default function DetailCompanyPage() {
 					<div>
 						<div className="inline-flex gap-4 items-center">
 							<span className="text-4xl font-semibold">
-								Pattern
+								{data.detail?.name}
 							</span>
 							<Badge className="rounded-none py-1 bg-transparent text-blue-primary border border-blue-primary">
-								43 Jobs
+								{data.totalJobs} Jobs
 							</Badge>
 						</div>
 						<div className="mt-2">
 							<Link
 								className="font-semibold text-blue-primary text-sm"
-								href={"/"}
+								href={data.detail?.website!!}
 								target="_blank"
 							>
-								https://pattern.com
+								{data.detail?.website}
 							</Link>
 						</div>
 						<div className="inline-flex items-center gap-10 mt-6">
 							<IconWithDetail
 								label="Founded"
-								value="July 31, 2011"
+								value={dateFormat(
+									data.detail?.dateFounded,
+									"MMMM, DD YYYY"
+								)}
 								type="founded"
 							/>
 							<IconWithDetail
 								label="Employees"
-								value="4000+"
+								value={data.detail?.employee}
 								type="employees"
 							/>
 							<IconWithDetail
 								label="Location"
-								value="20 countries"
+								value={data.detail?.location}
 								type="location"
 							/>
 							<IconWithDetail
 								label="Industry"
-								value="Payment Gateway"
+								value={data.detail?.industry}
 								type="industry"
 							/>
 						</div>
@@ -74,7 +123,7 @@ export default function DetailCompanyPage() {
 				<div className="w-3/4">
 					<DetailDescription
 						title="Company Profile"
-						desc="<p>Stripe is looking for Social Media Marketingexpert to help manage our online networks. You will be responsible for monitoring our social media channels, creating content, finding effective ways to engage the community and incentivize others to engage on our channels.</p>"
+						desc={data.detail?.description}
 					/>
 					<div>
 						<div className="text-3xl font-semibold mb-4">
@@ -82,15 +131,15 @@ export default function DetailCompanyPage() {
 						</div>
 						<div className="flex items-center gap-5 w-[400px] flex-wrap">
 							<IconSocmed
-								url="twitter.com/pattern"
+								url={data.socialMedia?.twitter}
 								type="twitter"
 							/>
 							<IconSocmed
-								url="twitter.com/pattern"
+								url={data.socialMedia?.linkedin}
 								type="linkedin"
 							/>
 							<IconSocmed
-								url="twitter.com/pattern"
+								url={data.socialMedia?.facebook}
 								type="facebook"
 							/>
 						</div>
@@ -103,9 +152,12 @@ export default function DetailCompanyPage() {
 					<div className="text-gray-500 text-sm">
 						Learn about the technology and tools that Pattern uses.
 					</div>
-					<div className="mt-5 inline-flex gap-4">
-						<Tag text="Javascript" />
-						<Tag text="HTML" />
+					<div className="mt-5 flex flex-row flex-wrap gap-4">
+						{data.detail?.techStack.map(
+							(tech: string, i: number) => (
+								<Tag key={i} text={tech} />
+							)
+						)}
 					</div>
 				</div>
 			</div>
@@ -115,18 +167,18 @@ export default function DetailCompanyPage() {
 				<div className="my-16">
 					<div className="text-3xl font-semibold mb-4">Teams</div>
 					<div className="grid grid-cols-5 gap-5 mt-5">
-						{[0, 1, 2, 3, 4].map((item: number) => (
+						{data.teams.map((team: teamCompanyType, i: number) => (
 							<div
-								key={item}
+								key={i + team.id}
 								className="border border-gray-200 px-3 py-5"
 							>
 								<div className="w-16 h-16 rounded-full mx-auto bg-gray-300"></div>
 								<div className="text-center my-4">
 									<div className="font-semibold text-sm">
-										Célestin Gardinier
+										{team.name}
 									</div>
 									<div className="text-gray-500 text-xs">
-										CEO & Co-Founder
+										{team.position}
 									</div>
 								</div>
 								<div className="mx-auto w-max">
@@ -141,7 +193,7 @@ export default function DetailCompanyPage() {
 				</div>
 				<Separator />
 			</div>
-			<LatestJobs />
+			<LatestJobsOpen jobs={data.latestJobs} />
 		</div>
 	);
 }

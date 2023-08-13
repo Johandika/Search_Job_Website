@@ -6,11 +6,16 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { IoMdArrowDropdown } from "react-icons/io";
+import MenuAuth from "../organisms/MenuAuth";
 
 interface HeaderProps {}
 
 const Header: FC<HeaderProps> = ({}) => {
 	const router = useRouter();
+
+	const { data: session } = useSession();
 
 	return (
 		<header className="px-32 py-5 flex flex-row items-start justify-between">
@@ -41,16 +46,22 @@ const Header: FC<HeaderProps> = ({}) => {
 				</div>
 			</div>
 			<div className="inline-flex items-center gap-4 h-8">
-				<Button
-					onClick={() => router.push("/auth/signin")}
-					variant="link"
-				>
-					Login
-				</Button>
-				<Separator orientation="vertical" />
-				<Button onClick={() => router.push("/auth/signup")}>
-					Sign Up
-				</Button>
+				{session ? (
+					<MenuAuth />
+				) : (
+					<>
+						<Button
+							onClick={() => router.push("/auth/signin")}
+							variant="link"
+						>
+							Login
+						</Button>
+						<Separator orientation="vertical" />
+						<Button onClick={() => router.push("/auth/signup")}>
+							Sign Up
+						</Button>
+					</>
+				)}
 			</div>
 		</header>
 	);

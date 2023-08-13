@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from "react";
+import { FC } from "react";
 
 interface DetailDescriptionProps {
 	title: string;
-	desc: string;
+	desc: string | undefined;
 }
 
 const DetailDescription: FC<DetailDescriptionProps> = ({ desc, title }) => {
@@ -11,7 +11,7 @@ const DetailDescription: FC<DetailDescriptionProps> = ({ desc, title }) => {
 			<div className="mb-4 text-3xl font-semibold">{title}</div>
 			<div
 				className="text-gray-500 text-sm"
-				dangerouslySetInnerHTML={{ __html: desc }}
+				dangerouslySetInnerHTML={{ __html: desc ? desc : "" }}
 			></div>
 		</div>
 	);

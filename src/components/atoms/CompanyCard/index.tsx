@@ -1,5 +1,6 @@
 import Tag from "@/components/organisms/FeaturedJobs/Tag";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 
 interface CompanyCardProps {
@@ -7,6 +8,7 @@ interface CompanyCardProps {
 	totalJobs: number;
 	name: string;
 	description: string;
+	id: string;
 	categories: string[];
 }
 
@@ -16,9 +18,14 @@ const CompanyCard: FC<CompanyCardProps> = ({
 	image,
 	name,
 	totalJobs,
+	id,
 }) => {
+	const router = useRouter();
+
+	const handleClickJob = () => router.push(`/detail/company/${id}`);
+
 	return (
-		<div className="border border-gray-300 p-6">
+		<div onClick={handleClickJob} className="border border-gray-300 p-6">
 			<div className="flex flex-row justify-between items-start">
 				<Image src={image} alt={image} width={66} height={66} />
 				<div className="text-blue-primary bg-blue-primary/10 w-max text-sm px-3 py-1">

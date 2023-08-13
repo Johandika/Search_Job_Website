@@ -46,13 +46,14 @@ export const LIST_FORM_FIELD_SIGN_IN: listFormFieldTypes[] = [
 	{
 		name: "password",
 		label: "Password",
+		type: "password",
 		placeholder: "Enter password",
 	},
 ];
 
 export const LIST_FORM_FIELD_SIGN_UP: listFormFieldTypes[] = [
 	{
-		name: "fullname",
+		name: "name",
 		label: "Full name",
 		placeholder: "Enter your full name",
 	},
@@ -64,6 +65,7 @@ export const LIST_FORM_FIELD_SIGN_UP: listFormFieldTypes[] = [
 	{
 		name: "password",
 		label: "Password",
+		type: "password",
 		placeholder: "Enter password",
 	},
 ];

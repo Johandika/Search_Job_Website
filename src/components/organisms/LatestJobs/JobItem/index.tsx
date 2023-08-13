@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import React, { FC } from "react";
 import Tag from "../../FeaturedJobs/Tag";
+import { useRouter } from "next/navigation";
 
 interface JobItemProps {
 	image: string;
@@ -11,6 +12,7 @@ interface JobItemProps {
 	location: string;
 	jobType: string;
 	categories: string[];
+	id: string;
 }
 
 const JobItem: FC<JobItemProps> = ({
@@ -20,9 +22,17 @@ const JobItem: FC<JobItemProps> = ({
 	location,
 	name,
 	type,
+	id,
 }) => {
+	const router = useRouter();
+
+	const handleClickJob = () => router.push(`/detail/job/${id}`);
+
 	return (
-		<div className="bg-white shadow-xs p-8 flex flex-row items-start gap-6 cursor-pointer">
+		<div
+			onClick={handleClickJob}
+			className="bg-white shadow-xs p-8 flex flex-row items-start gap-6 cursor-pointer"
+		>
 			<Image src={image} alt={image} width={64} height={64} />
 			<div>
 				<div className="text-lg font-semibold">{name}</div>

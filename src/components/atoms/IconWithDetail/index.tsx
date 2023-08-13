@@ -4,7 +4,7 @@ type typeProp = "founded" | "employees" | "location" | "industry";
 
 interface IconWithDetailProps {
 	label: string;
-	value: string;
+	value: string | undefined;
 	type: typeProp;
 }
 

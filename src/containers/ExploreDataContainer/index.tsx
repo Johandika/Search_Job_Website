@@ -134,14 +134,18 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 									{type === "jobs" &&
 										props.data.map(
 											(item: JobCardProps, i: number) => (
-												<JobCard key={i} {...item} />
+												<JobCard
+													key={i + item.id}
+													{...item}
+												/>
 											)
 										)}
 									{type === "companies" &&
 										props.data.map(
 											(item: any, i: number) => (
 												<CompanyCard
-													key={i}
+													key={i + item.id}
+													id={item.id}
 													name={item.name}
 													image={item.image}
 													totalJobs={item.totalJobs}

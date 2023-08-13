@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 import Tag from "../Tag";
 import Loading from "./Loading";
+import { useRouter } from "next/navigation";
 
 type FeaturedJobItemProps = {} & (ItemLoadingProps | ItemNonLoadingProps);
 
@@ -18,16 +19,28 @@ type ItemNonLoadingProps = {
 	location: string;
 	desc: string;
 	categories: string[];
+	id: string;
 };
 
 const FeaturedJobItem: FC<FeaturedJobItemProps> = (props) => {
+	const router = useRouter();
+
+	const handleDetailPage = () => {
+		if (!props.loading) {
+			router.push(`/detail/job/${props.id}`);
+		}
+	};
+
 	return (
 		<div className="border border-slate-200 p-6 cursor-pointer">
 			{props.loading ? (
 				<Loading />
 			) : (
 				<>
-					<div className="flex flex-row justify-between items-start">
+					<div
+						onClick={handleDetailPage}
+						className="flex flex-row justify-between items-start"
+					>
 						<Image
 							src={props.image}
 							alt={props.image}

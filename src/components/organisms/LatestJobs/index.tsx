@@ -1,3 +1,5 @@
+"use client";
+
 import TitleSection from "@/components/atoms/TitleSection";
 import useJobsLanding from "@/hooks/api/useJobsLanding";
 import { sortingParamsType } from "@/types";
@@ -41,6 +43,7 @@ const LatestJobs: FC<LatestJobsProps> = ({}) => {
 					{jobs?.map((item: any, i: number) => (
 						<JobItem
 							key={i + item.id}
+							id={item.id}
 							image={item.image}
 							name={item.roles}
 							type={item.companyType}

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 
 import { z } from "zod";
@@ -19,10 +19,23 @@ import {
 	LIST_FORM_FIELD_APPLYJOB_1,
 	LIST_FORM_FIELD_APPLYJOB_2,
 } from "@/constants/form";
+import { JobType } from "@/types/job";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { supabaseUploadImg } from "@/lib/supabase";
 
-interface DialogApplyProps {}
+interface DialogApplyProps {
+	job: JobType;
+	isApply: number;
+}
 
-const DialogApply: FC<DialogApplyProps> = ({}) => {
+const DialogApply: FC<DialogApplyProps> = ({ job, isApply }) => {
+	const { data: session } = useSession();
+
+	const { toast } = useToast();
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof formApplySchema>>({
 		resolver: zodResolver(formApplySchema),
 		defaultValues: {
@@ -36,32 +49,87 @@ const DialogApply: FC<DialogApplyProps> = ({}) => {
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof formApplySchema>) => {
-		console.log(values);
+	const onSubmit = async (values: z.infer<typeof formApplySchema>) => {
+		try {
+			const { filename, error } = await supabaseUploadImg(
+				values.resume,
+				"applicant"
+			);
+
+			const body = {
+				userId: session?.user.id,
+				jobId: job.id,
+				resume: filename,
+				coverLetter: values.coverLetter,
+				linkedIn: values.linkedIn,
+				phone: values.phone,
+				portfolio: values.portfolio,
+				previousJobTitle: values.previousJobTitle,
+			};
+
+			if (error) {
+				throw "Error";
+			}
+
+			await fetch("/api/job/apply", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+
+			await toast({
+				title: "Success",
+				description: "Apply job success",
+			});
+			router.replace("/");
+		} catch (error) {
+			console.log(error);
+			toast({
+				title: "Error",
+				description: "Please try again",
+			});
+		}
 	};
+
+	useEffect(() => {
+		if (session) {
+			form.setValue("fullname", session.user.name);
+			form.setValue("email", session.user.email);
+		}
+	}, [session]);
 
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className="text-lg px-12 py-6">Apply</Button>
+				{isApply ? (
+					<Button
+						disabled
+						className="text-lg px-12 py-6 bg-green-500"
+					>
+						Applied
+					</Button>
+				) : (
+					<Button className="text-lg px-12 py-6">Apply</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[600px]">
 				<div>
 					<div className="inline-flex items-center gap-4">
 						<div>
 							<Image
-								src="/images/company.png"
-								alt="/images/company.png"
+								src={job.image}
+								alt={job.image}
 								width={60}
 								height={60}
 							/>
 						</div>
 						<div>
 							<div className="text-lg font-semibold">
-								Social Media Assistant
+								{job.roles}
 							</div>
 							<div className="text-gray-500">
-								Agency · Paris, France · Full-Time
+								{job.category.name} · {job.location} ·{" "}
+								{job.jobType}
 							</div>
 						</div>
 					</div>
