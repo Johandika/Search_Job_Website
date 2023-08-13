@@ -27,7 +27,7 @@ import { supabaseUploadImg } from "@/lib/supabase";
 
 interface DialogApplyProps {
 	job: JobType;
-	isApply: number;
+	isApply: number | null;
 }
 
 const DialogApply: FC<DialogApplyProps> = ({ job, isApply }) => {
