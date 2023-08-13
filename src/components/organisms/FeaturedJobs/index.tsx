@@ -1,5 +1,5 @@
 import TitleSection from "@/components/atoms/TitleSection";
-import useJobsLanding from "@/hooks/useJobsLanding";
+import useJobsLanding from "@/hooks/api/useJobsLanding";
 import { FC } from "react";
 import FeaturedJobItem from "./FeaturedJobItem";
 

@@ -1,9 +1,11 @@
 import { create } from "zustand";
 
 interface FilterType {
-	jobTypes: string[];
-	categories: string[];
-	salaryRange: string[];
+	jobTypes?: string[];
+	categories?: string[];
+	salaryRange?: string[];
+	industry?: string[];
+	companySize?: string[];
 }
 
 interface FilterState {
@@ -17,6 +19,8 @@ const initialState = {
 	jobLevels: [],
 	jobTypes: [],
 	salaryRange: [],
+	industry: [],
+	companySize: [],
 };
 
 export const useFilterStore = create<FilterState>((set) => ({

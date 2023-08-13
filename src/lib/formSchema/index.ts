@@ -7,10 +7,8 @@ export const formFilterJobSchema = z.object({
 });
 
 export const formFilterCompanySchema = z.object({
-	industry: z.array(z.string()).refine((value) => value.some((item) => item)),
-	companySize: z
-		.array(z.string())
-		.refine((value) => value.some((item) => item)),
+	industry: z.array(z.string()),
+	companySize: z.array(z.string()),
 });
 
 export const formSearchSchema = z.object({

@@ -89,6 +89,7 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 					form={formFilter}
 					onSubmit={onSubmitFilter}
 					checkboxForm={filterForms}
+					type={type}
 				/>
 				<div className="w-4/5">
 					<div className="mb-8">
@@ -121,15 +122,15 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 								))}
 						</div>
 					) : (
-						<div
-							className={cn(
-								type === "jobs"
-									? "grid grid-cols-1 gap-4"
-									: "grid grid-cols-3 gap-4"
-							)}
-						>
+						<>
 							{props.data.length > 0 ? (
-								<>
+								<div
+									className={cn(
+										type === "jobs"
+											? "grid grid-cols-1 gap-4"
+											: "grid grid-cols-3 gap-4"
+									)}
+								>
 									{type === "jobs" &&
 										props.data.map(
 											(item: JobCardProps, i: number) => (
@@ -141,22 +142,23 @@ const ExploreDataContainer: FC<ExploreDataContainerProps> = ({
 											(item: any, i: number) => (
 												<CompanyCard
 													key={i}
-													name="Pattern"
-													image="/images/company.png"
-													totalJobs={8}
-													description="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolores officia laudantium beatae possimus unde dicta similique perferendis voluptates corrupti, amet odio cum deleniti alias quo pariatur, numquam excepturi magni eos."
+													name={item.name}
+													image={item.image}
+													totalJobs={item.totalJobs}
+													description={
+														item.detail?.description
+													}
 													categories={[
-														"Marketing",
-														"Blockchain",
+														item.detail?.industry,
 													]}
 												/>
 											)
 										)}
-								</>
+								</div>
 							) : (
 								<EmptyData />
 							)}
-						</div>
+						</>
 					)}
 				</div>
 			</div>

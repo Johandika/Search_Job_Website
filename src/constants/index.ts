@@ -172,23 +172,23 @@ export const INDUSTRY_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
 
 export const COMPANYSIZE_OPTIONS_FILTER: FilterCheckboxOptionsProps[] = [
 	{
-		id: "1,50",
+		id: "1-50",
 		label: "1-50",
 	},
 	{
-		id: "51,150",
+		id: "51-150",
 		label: "51-150",
 	},
 	{
-		id: "151,250",
+		id: "151-250",
 		label: "151-250",
 	},
 	{
-		id: "251,500",
+		id: "251-500",
 		label: "251-500",
 	},
 	{
-		id: "501,1000",
+		id: "501-1000",
 		label: "501-1000",
 	},
 	{

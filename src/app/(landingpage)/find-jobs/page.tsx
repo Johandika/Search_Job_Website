@@ -12,7 +12,7 @@ import {
 	SALARY_RANGE_OPTIONS_FILTER,
 } from "@/constants";
 import ExploreDataContainer from "@/containers/ExploreDataContainer";
-import useJobs from "@/hooks/useJobs";
+import useJobs from "@/hooks/api/useJobs";
 import { formFilterJobSchema, formSearchSchema } from "@/lib/formSchema";
 import { useFilterStore } from "@/lib/stores/filter";
 import { useSearchStore } from "@/lib/stores/search";

@@ -57,6 +57,33 @@ export const parserJobs = async (data: any[]) => {
 	);
 };
 
+export const parserCompanies = async (data: any[]) => {
+	return await Promise.all(
+		data.map(async (item: any) => {
+			let imageName = item.Companyoverview[0]?.image;
+			let supabaseImageUrl;
+
+			if (imageName) {
+				supabaseImageUrl = await supabaseGetPublicURL(
+					imageName,
+					"company"
+				);
+			} else {
+				supabaseImageUrl = "/images/company.png";
+			}
+
+			return {
+				id: item.id,
+				name: item.name,
+				email: item.email,
+				detail: item.Companyoverview[0],
+				image: supabaseImageUrl,
+				totalJobs: item._count?.Job,
+			};
+		})
+	);
+};
+
 export const stringToObject = (val?: string | null) => {
 	if (!val) {
 		return val;
@@ -80,4 +107,24 @@ export const parserCategories = (data: any[]) => {
 			label: item.name,
 		};
 	});
+};
+
+export const getPrismaQuery = (url: string) => {
+	const { searchParams } = new URL(url);
+
+	const isFilter = searchParams.get("filter");
+	const filtering =
+		JSON.parse(isFilter === null ? "{}" : isFilter) ?? undefined;
+
+	const isSearch = searchParams.get("search");
+	const searching =
+		JSON.parse(isSearch === null ? "{}" : isSearch) ?? undefined;
+
+	const filterWhere = isFilter === "{}" ? {} : { ...filtering };
+	const searchWhere = isSearch === "{}" ? {} : { ...searching };
+
+	return {
+		filterWhere,
+		searchWhere,
+	};
 };

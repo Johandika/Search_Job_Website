@@ -3,7 +3,7 @@
 import { FC } from "react";
 
 import TitleSection from "@/components/atoms/TitleSection";
-import useCategories from "@/hooks/useCategories";
+import useCategories from "@/hooks/api/useCategories";
 import CategoryItem from "./CategoryItem";
 
 interface CategoryProps {}

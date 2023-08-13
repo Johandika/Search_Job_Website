@@ -1,5 +1,5 @@
 import TitleSection from "@/components/atoms/TitleSection";
-import useJobsLanding from "@/hooks/useJobsLanding";
+import useJobsLanding from "@/hooks/api/useJobsLanding";
 import { sortingParamsType } from "@/types";
 import Image from "next/image";
 import { FC } from "react";
@@ -46,7 +46,7 @@ const LatestJobs: FC<LatestJobsProps> = ({}) => {
 							type={item.companyType}
 							location={item.location}
 							jobType={item.jobType}
-							categories={item.requiredSkills}
+							categories={item.requiredSkills.slice(0, 2)}
 						/>
 					))}
 				</div>
