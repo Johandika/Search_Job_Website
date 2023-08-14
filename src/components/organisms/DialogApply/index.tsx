@@ -108,8 +108,12 @@ const DialogApply: FC<DialogApplyProps> = ({ job, isApply }) => {
 					>
 						Applied
 					</Button>
-				) : (
+				) : session ? (
+					
 					<Button className="text-lg px-12 py-6">Apply</Button>
+				
+				) : (
+					<Button variant="outline" disabled>Sign In First</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[600px]">

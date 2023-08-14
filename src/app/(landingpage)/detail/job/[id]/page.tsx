@@ -39,10 +39,12 @@ async function getDetailJob(id: string) {
 async function getApplicantById() {
 	const session = await getServerSession(authOptions);
 
+	const applicants = await prisma.applicant.count();
+
 	if (!session) {
 		return {
 			isApply: null,
-			totalApplicants: 0,
+			totalApplicants: applicants,
 		};
 	}
 
@@ -51,8 +53,6 @@ async function getApplicantById() {
 			userId: session?.user.id,
 		},
 	});
-
-	const applicants = await prisma.applicant.count();
 
 	return {
 		isApply,
